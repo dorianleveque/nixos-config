@@ -42,13 +42,14 @@
   };
 
   services = {
-  
+
+  	# Enable flatpak
     flatpak.enable = true;
     
     # Enable the X11 windowing system.
-    xserver.enable = true;
-    xserver.excludePackages = [ pkgs.xterm ]; # remove xterminal
-    xserver.videoDriver = "amdgpu";
+    #xserver.enable = false;
+    #xserver.excludePackages = [ pkgs.xterm ]; # remove xterminal
+    #xserver.videoDriver = "amdgpu";
   
     # Enable the GNOME Desktop Environment.
     # displayManager.sddm.enable = true;
@@ -75,6 +76,24 @@
       alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = true;
+      
+      extraConfig.pipewire = {
+        "v4l2loopback" = {
+          context.properties = {
+            "default.clock.rate" = 48000;
+            "log.level" = 3;
+          };
+          context.modules = [
+            {
+              name = "libcamera";
+              args = {
+                "camera.name" = "v4l2loopback-camera";
+                "device.name" = "/dev/video0";
+              };
+            }
+          ];
+        };
+      };
 
       # use the example session manager (no others are packaged yet so this is enabled by default,
       # no need to redefine it in your config for now)
@@ -142,27 +161,36 @@
     systemPackages = with pkgs; [
       adw-gtk3
       apple-cursor
-      desktop-file-utils
+      #desktop-file-utils
       fastfetch
+      fragments
       gnome-photos
       gnomeExtensions.arcmenu
-      gnomeExtensions.blur-my-shell
       gnomeExtensions.caffeine
       gnomeExtensions.daily-bing-wallpaper
       gnomeExtensions.dash-to-panel
       gnomeExtensions.gsconnect
       gnomeExtensions.gtk4-desktop-icons-ng-ding
       gnomeExtensions.night-theme-switcher
+      gnomeExtensions.pip-on-top
       gnomeExtensions.removable-drive-menu
-      gnomeExtensions.remove-world-clocks
       home-manager
       mission-center
       nautilus-python
       onlyoffice-desktopeditors
       pinta
       signal-desktop
-      teams-for-linux
       vlc
+      
+      # packages for vitual-cam (test)
+      scrcpy
+      #linuxKernel.packages.linux_6_17.v4l2loopback
+      ffmpeg
+      droidcam
+
+      # packages for hyperland desktop
+      hyprpaper
+      waybar
     ];
   };
 

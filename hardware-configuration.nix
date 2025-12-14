@@ -4,19 +4,19 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
   boot = {
     consoleLogLevel = 3;
-    extraModulePackages = [ ];
+    extraModulePackages = [ pkgs.linuxKernel.packages.linux_6_17.v4l2loopback ];
 
     initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
     initrd.kernelModules = [ "amdgpu" ];
     initrd.verbose = false;
 
-    kernelModules = [ "amdgpu" ];
+    kernelModules = [ "amdgpu" "v4l2loopback" ];
     kernelPackages = pkgs.linuxPackages_latest; # force to use the last kernel (not necessary)
     kernelParams = [ "quiet" "splash" "boot.shell_on_fail" "udev.log_priority=3" "rd.systemd.show_status=auto" ];
 
