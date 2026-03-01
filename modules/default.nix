@@ -7,6 +7,7 @@
     ./env-variables.nix
     ./firefox.nix
     ./flathub.nix
+    ./git.nix
     ./gnome.nix
     ./hyprland.nix
     ./steam.nix

@@ -79,14 +79,19 @@
     isNormalUser = true;
     description = "dorian";
     extraGroups = [ "networkmanager" "wheel" ];
-    #packages = with pkgs; [
-    #  dconf-editor
-    #  git
-    #  micro
-    #  vscode
-    #  wget
-    #  zip
-    #];
+    packages = with pkgs; [
+      # Gamer softwares
+      (bottles.override { removeWarningPopup = true; })
+      discord
+
+      # Dev softwares
+      dconf-editor #(maybe with flatpak)
+      gnome-builder
+      micro
+      nodejs
+      python3Minimal
+      #vscode
+    ];
   };
 
   # Allow unfree packages
@@ -104,18 +109,20 @@
     ]);
     
     systemPackages = with pkgs; [
-      adw-gtk3
-      apple-cursor
-      blanket
-      (bottles.override { removeWarningPopup = true; })
+      nautilus-python # TODO move in gnome.nix when patch will be ready
+      
+      # Core softwares
       fastfetch
       fragments
-      home-manager
-      nautilus-python
+      gnome-secrets
       onlyoffice-desktopeditors
-      pinta
+      parabolic
+      pinta  # need to be replace, not user friendly
+      shortwave
       signal-desktop
-      vlc
+      tagger
+      thunderbird
+      upscaler
     ];
   };
 

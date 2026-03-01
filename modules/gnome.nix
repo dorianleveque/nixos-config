@@ -133,12 +133,20 @@
   
   environment = {
     
+    # Change the default gtk-3.0 theme to adw-gtk3 theme 
+    # to better match the Adwaita theme described in gtk-4.0.
+    etc."gtk-3.0/settings.ini".text = ''
+      [Settings]
+      gtk-theme-name=adw-gtk3
+    '';
+    
     gnome.excludePackages = with pkgs; [
       gnome-tour
       gnome-system-monitor
     ];
     
     systemPackages = with pkgs; [
+      adw-gtk3
       gnome-photos
       gnome-tweaks
       gnomeExtensions.arcmenu
