@@ -59,7 +59,6 @@
       alias less='less -R'
       alias cls='clear'
       alias plz='sudo $(fc -ln -1)'
-      alias nixos-rebuild='sudo nixos-rebuild'
       alias now='date "+%Y-%m-%d %a %T %Z"'
       cat() { bat --style=-numbers "$@"; }
       man() { command man "$@" | bat -l man --style=-numbers; }
