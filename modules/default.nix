@@ -10,6 +10,7 @@
     ./git.nix
     ./gnome.nix
     ./hyprland.nix
+    ./pipewire.nix
     ./steam.nix
   ];
 }
