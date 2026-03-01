@@ -10,13 +10,12 @@
 
   boot = {
     consoleLogLevel = 3;
-    extraModulePackages = [ pkgs.linuxKernel.packages.linux_6_17.v4l2loopback ];
 
     initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
     initrd.kernelModules = [ "amdgpu" ];
     initrd.verbose = false;
 
-    kernelModules = [ "amdgpu" "v4l2loopback" ];
+    kernelModules = [ "amdgpu" ];
     kernelPackages = pkgs.linuxPackages_latest; # force to use the last kernel (not necessary)
     kernelParams = [ "quiet" "splash" "boot.shell_on_fail" "udev.log_priority=3" "rd.systemd.show_status=auto" ];
 
@@ -50,12 +49,19 @@
     disabledDefaultBackends = [ "escl" ];
   };
 
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp11s0.useDHCP = lib.mkDefault true;
+  networking = {
+      # Enable networking
+    networkmanager.enable = true;
+  
+    # Define the PC name
+    hostName = "Roazhon";
+    
+    # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+    # (the default) this is the recommended approach. When using systemd-networkd it's
+    # still possible to use this option, but it's recommended to use it in conjunction
+    # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+    useDHCP = lib.mkDefault true;
+  };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
@@ -66,16 +72,10 @@
    
   hardware.graphics = { 
     enable = true;
-    enable32Bit = true;
-    
-    # enable Vulkan support for 32-bit & 64-bit applications
-    extraPackages   = [ pkgs.amdvlk ];
-    extraPackages32 = [ pkgs.driversi686Linux.amdvlk ];
+    #enable32Bit = true;
   };
 
   environment.variables = {
-    # Force radv
-    AMD_VULKAN_ICD = "RADV";
     VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
   };
 }

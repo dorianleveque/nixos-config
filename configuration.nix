@@ -2,20 +2,22 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, modulesPath, pkgs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./local.nix
+      ./modules/default.nix
     ];
 
   networking = {
-    # hostName = "Winterfell"; # Define your hostname.
-    
     # Enable networking
     networkmanager.enable = true;
-    # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+    
+    # Enables wireless support via wpa_supplicant.
+    # wireless.enable = true;
   
     # Configure network proxy if necessary
     # proxy.default = "http://user:password@proxy:port/";
@@ -43,28 +45,11 @@
 
   services = {
 
-  	# Enable flatpak
-    flatpak.enable = true;
-    
-    # Enable the X11 windowing system.
-    #xserver.enable = false;
-    #xserver.excludePackages = [ pkgs.xterm ]; # remove xterminal
-    #xserver.videoDriver = "amdgpu";
-  
-    # Enable the GNOME Desktop Environment.
-    # displayManager.sddm.enable = true;
-    xserver.displayManager.gdm.enable = true;
-    xserver.desktopManager.gnome.enable = true;
-    xserver.desktopManager.xterm.enable = false; # remove xterminal
-
-    # Configure keymap in X11
+    # Fix keyboard layout for gdm.
     xserver.xkb = {
       layout = "fr";
       variant = "";
     };
-    
-    # Enable touchpad support (enabled default in most desktopManager).
-    # xserver.libinput.enable = true;
     
     # Enable CUPS to print documents.
     printing.enable = true;
@@ -76,24 +61,6 @@
       alsa.support32Bit = true;
       pulse.enable = true;
       jack.enable = true;
-      
-      extraConfig.pipewire = {
-        "v4l2loopback" = {
-          context.properties = {
-            "default.clock.rate" = 48000;
-            "log.level" = 3;
-          };
-          context.modules = [
-            {
-              name = "libcamera";
-              args = {
-                "camera.name" = "v4l2loopback-camera";
-                "device.name" = "/dev/video0";
-              };
-            }
-          ];
-        };
-      };
 
       # use the example session manager (no others are packaged yet so this is enabled by default,
       # no need to redefine it in your config for now)
@@ -105,6 +72,7 @@
   console.keyMap = "fr";
 
   security.rtkit.enable = true;
+  security.polkit.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.dorian = {
@@ -123,33 +91,10 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # System programs
-  programs = {
-    firefox.enable = true;
-    hyprland.enable = true;
-    
-    kdeconnect = {
-      enable = true;
-      package = pkgs.gnomeExtensions.gsconnect;
-    };
-    
-    steam = {
-      enable = false;
-      dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-      localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-    };
-    
-  };
-  
+ 
   environment = {
     
-    gnome.excludePackages = with pkgs; [
-      gnome-tour
-      gnome-system-monitor
-    ];
-    
+    # not necessary, I think
     sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (with pkgs.gst_all_1; [
       gst-plugins-base
       gst-plugins-good
@@ -161,36 +106,16 @@
     systemPackages = with pkgs; [
       adw-gtk3
       apple-cursor
-      #desktop-file-utils
+      blanket
+      (bottles.override { removeWarningPopup = true; })
       fastfetch
       fragments
-      gnome-photos
-      gnomeExtensions.arcmenu
-      gnomeExtensions.caffeine
-      gnomeExtensions.daily-bing-wallpaper
-      gnomeExtensions.dash-to-panel
-      gnomeExtensions.gsconnect
-      gnomeExtensions.gtk4-desktop-icons-ng-ding
-      gnomeExtensions.night-theme-switcher
-      gnomeExtensions.pip-on-top
-      gnomeExtensions.removable-drive-menu
       home-manager
-      mission-center
       nautilus-python
       onlyoffice-desktopeditors
       pinta
       signal-desktop
       vlc
-      
-      # packages for vitual-cam (test)
-      scrcpy
-      #linuxKernel.packages.linux_6_17.v4l2loopback
-      ffmpeg
-      droidcam
-
-      # packages for hyperland desktop
-      hyprpaper
-      waybar
     ];
   };
 
@@ -222,5 +147,19 @@
   system.stateVersion = "25.05"; # Did you read the comment?
   system.autoUpgrade.enable = true;
   nix.settings.auto-optimise-store = true;
+  
+  # Configure the nix garbage collector to clean lastest builds.
+  # Useful to avoid system taking to much space like Windows ;)
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+    
+    # Relaunch the garbage collector at system startup 
+    # if system was shutdown before its execution. 
+    persistent = true;
+  };
+  
+  # Hide nix documentation shortcut. Useless for non admin users.
   documentation.nixos.enable = false;
 }
