@@ -11,6 +11,7 @@
     ./gnome.nix
     ./hyprland.nix
     ./pipewire.nix
+    ./printing.nix
     ./steam.nix
   ];
 }

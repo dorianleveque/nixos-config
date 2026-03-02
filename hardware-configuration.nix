@@ -42,13 +42,6 @@
     { device = "/dev/disk/by-uuid/593f3ccc-3575-4074-8fcf-e21b6a4616ca"; }
   ];
 
-  # Fix scanner instrument search
-  hardware.sane = {
-    enable = true;
-    extraBackends = [ pkgs.sane-airscan ];
-    disabledDefaultBackends = [ "escl" ];
-  };
-
   networking = {
       # Enable networking
     networkmanager.enable = true;
