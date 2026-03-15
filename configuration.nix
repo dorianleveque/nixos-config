@@ -8,21 +8,9 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./local.nix
+      #./local.nix
       ./modules/default.nix
     ];
-
-  networking = {
-    # Enable networking
-    networkmanager.enable = true;
-    
-    # Enables wireless support via wpa_supplicant.
-    # wireless.enable = true;
-  
-    # Configure network proxy if necessary
-    # proxy.default = "http://user:password@proxy:port/";
-    # proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-  };
 
   # Set your time zone.
   time.timeZone = "Europe/Paris";
@@ -135,6 +123,7 @@
   system.stateVersion = "25.05"; # Did you read the comment?
   system.autoUpgrade.enable = true;
   nix.settings.auto-optimise-store = true;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   
   # Configure the nix garbage collector to clean lastest builds.
   # Useful to avoid system taking to much space like Windows ;)
