@@ -13,5 +13,6 @@
     ./pipewire.nix
     ./printing.nix
     ./steam.nix
+    ./system.nix
   ];
 }
