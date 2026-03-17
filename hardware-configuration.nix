@@ -30,9 +30,6 @@
     # Hide verbose logs at startup
     plymouth.enable = true;
   };
-  
-  # Improve SSD management
-  services.fstrim.enable = true;
 
   # Mount drives
   fileSystems."/" =           { device = "/dev/disk/by-uuid/f4a796ae-a25d-4d46-a8ca-c36730305f70"; fsType = "ext4"; };
