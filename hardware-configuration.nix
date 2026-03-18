@@ -8,28 +8,10 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot = {
-    consoleLogLevel = 3;
-
-    initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
-    initrd.kernelModules = [ "amdgpu" ];
-    initrd.verbose = false;
-
-    kernelModules = [ "amdgpu" ];
-    kernelPackages = pkgs.linuxPackages_latest; # force to use the last kernel (not necessary)
-    kernelParams = [ "quiet" "splash" "boot.shell_on_fail" "udev.log_priority=3" "rd.systemd.show_status=auto" ];
-
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
-
-    # Hide the OS choice for bootloaders.
-    # It's still possible to open the bootloader list by pressing any key
-    # It will just not appear on screen unless a key is pressed
-    loader.timeout = 0;
-
-    # Hide verbose logs at startup
-    plymouth.enable = true;
-  };
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-amd" ];
+  boot.extraModulePackages = [ ];
 
   # Mount drives
   fileSystems."/" =           { device = "/dev/disk/by-uuid/f4a796ae-a25d-4d46-a8ca-c36730305f70"; fsType = "ext4"; };
@@ -57,11 +39,6 @@
   #hardware.bluetooth.enable = true; # enables support for Bluetooth
   #hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
    
-  hardware.graphics = { 
-    enable = true;
-    #enable32Bit = true;
-  };
-
   environment.variables = {
     VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
   };
