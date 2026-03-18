@@ -4,6 +4,7 @@
   imports = [
     ./android-webcam.nix
     ./bash.nix
+    ./boot.nix
     ./env-variables.nix
     ./firefox.nix
     ./flathub.nix
