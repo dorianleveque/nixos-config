@@ -11,6 +11,7 @@
     ./git.nix
     ./gnome.nix
     ./hyprland.nix
+    ./networking.nix
     ./pipewire.nix
     ./printing.nix
     ./steam.nix
