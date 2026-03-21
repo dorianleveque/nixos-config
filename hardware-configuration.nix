@@ -14,32 +14,26 @@
   boot.extraModulePackages = [ ];
 
   # Mount drives
-  fileSystems."/" =           { device = "/dev/disk/by-uuid/f4a796ae-a25d-4d46-a8ca-c36730305f70"; fsType = "ext4"; };
-  fileSystems."/media/Jeux" = { device = "/dev/disk/by-uuid/44327937-4697-4939-b15f-de6a7580ca9d"; fsType = "ext4"; };
-  fileSystems."/boot" =       { device = "/dev/disk/by-uuid/5BE0-6CB4"; fsType = "vfat"; options = [ "fmask=0077" "dmask=0077" ]; };
-  swapDevices = [ 
-    { device = "/dev/disk/by-uuid/593f3ccc-3575-4074-8fcf-e21b6a4616ca"; }
-  ];
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/f4a796ae-a25d-4d46-a8ca-c36730305f70";
+      fsType = "ext4";
+    };
 
-  networking = {
-      # Enable networking
-    networkmanager.enable = true;
-    
-    # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-    # (the default) this is the recommended approach. When using systemd-networkd it's
-    # still possible to use this option, but it's recommended to use it in conjunction
-    # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-    useDHCP = lib.mkDefault true;
-  };
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/5BE0-6CB4";
+      fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
+    };
+
+  fileSystems."/media/Jeux" =
+    { device = "/dev/disk/by-uuid/44327937-4697-4939-b15f-de6a7580ca9d";
+      fsType = "ext4";
+    };
+
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/593f3ccc-3575-4074-8fcf-e21b6a4616ca"; }
+    ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.amdgpu.opencl.enable = true; # Fix for Davinci resolve
-  
-  #hardware.bluetooth.enable = true; # enables support for Bluetooth
-  #hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
-   
-  environment.variables = {
-    VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
-  };
 }
