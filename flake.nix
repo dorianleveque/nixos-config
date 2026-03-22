@@ -13,6 +13,7 @@
       default = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+          /etc/nixos/configuration.nix
           /etc/nixos/hardware-configuration.nix
           ./modules/default.nix
         ];
@@ -23,6 +24,7 @@
       #gaming = nixpkgs.lib.nixosSystem {
       #  system = "x86_64-linux";
       #  modules = [
+      #    /etc/nixos/configuration.nix
       #    /etc/nixos/hardware-configuration.nix
       #    ./modules/default.nix
       #    ./modules/gaming.nix

@@ -5,17 +5,11 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./modules/default.nix
-    ];
-
   networking = {
-    hostName = "Winterfell"; # Define your hostname.
+    hostName = "Roazhon"; # Define your hostname.
     
     # Enable networking
-    networkmanager.enable = true;dd
+    networkmanager.enable = true;
     # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   
     # Configure network proxy if necessary
