@@ -25,15 +25,15 @@
 
       # Profil gaming — ta machine de jeu
       # nixos-install --flake github:toi/nixos-config#gaming
-      #gaming = nixpkgs.lib.nixosSystem {
-      #  system = "x86_64-linux";
-      #  modules = [
-      #    /etc/nixos/configuration.nix
-      #    /etc/nixos/hardware-configuration.nix
-      #    ./modules/default.nix
+      gaming = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          "${local}/hardware-configuration.nix"
+          "${local}/configuration.nix"
+          ./modules/default.nix
       #    ./modules/gaming.nix
-      #  ];
-      #};
+        ];
+      };
 
     };
   };
