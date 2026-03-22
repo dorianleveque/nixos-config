@@ -13,6 +13,22 @@
         "type": "path"
       }
     },
+    "mybash": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774121058,
+        "narHash": "sha256-I23lFdGgk2iQa9+ZM9CvNufjbvZJciT9nbemyR/Fdk8=",
+        "owner": "dorianleveque",
+        "repo": "mybash",
+        "rev": "4b91ab26f303b1ff3404c9cec6e8490f23da5f38",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dorianleveque",
+        "repo": "mybash",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1773964973,
@@ -32,6 +48,7 @@
     "root": {
       "inputs": {
         "local": "local",
+        "mybash": "mybash",
         "nixpkgs": "nixpkgs"
       }
     }
