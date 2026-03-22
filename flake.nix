@@ -3,9 +3,13 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # stable channel
+    local = {
+      url = "path:/etc/nixos";
+      flake = false;  # c'est un répertoire, pas un flake
+    };
   };
 
-  outputs = { self, nixpkgs }: {
+  outputs = { self, nixpkgs, local }: {
     nixosConfigurations = {
     
       # Profil par défaut — parents, cousines
@@ -13,8 +17,8 @@
       default = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          /etc/nixos/configuration.nix
-          /etc/nixos/hardware-configuration.nix
+          "${local}/hardware-configuration.nix"
+          "${local}/configuration.nix"
           ./modules/default.nix
         ];
       };
