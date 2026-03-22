@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, modulesPath, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports =
@@ -10,6 +10,18 @@
       ./hardware-configuration.nix
       ./modules/default.nix
     ];
+
+  networking = {
+    hostName = "Winterfell"; # Define your hostname.
+    
+    # Enable networking
+    networkmanager.enable = true;dd
+    # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  
+    # Configure network proxy if necessary
+    # proxy.default = "http://user:password@proxy:port/";
+    # proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Paris";
