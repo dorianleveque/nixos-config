@@ -33,7 +33,7 @@
   
   system.autoUpgrade = {
     enable = true;
-    flake = "github:dorianleveque/my-nixos-config";
+    flake = "github:dorianleveque/my-nixos-config#default";
     operation = "boot";
     flags = [ "--impure" ];
   };
