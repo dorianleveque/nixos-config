@@ -3,24 +3,20 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # stable channel
-    local = {
-      url = "path:/etc/nixos";
-      flake = false;
-    };
     mybash = {
       url = "github:dorianleveque/mybash";
       flake = false;
     };
   };
 
-  outputs = { self, nixpkgs, local, mybash }: 
+  outputs = { self, nixpkgs, mybash }: 
   let
     mkSystem = extraModules: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit mybash; };
       modules = [
-        "${local}/hardware-configuration.nix"
-        "${local}/configuration.nix"
+        /etc/nixos/hardware-configuration.nix
+        /etc/nixos/configuration.nix
         ./modules/default.nix
       ] ++ extraModules;
     };

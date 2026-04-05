@@ -1,18 +1,5 @@
 {
   "nodes": {
-    "local": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1775423104,
-        "narHash": "sha256-doHIWiA5jGvUMl35mMTMt+leThWUDKHwB7Tz3IGpiRs=",
-        "path": "/etc/nixos",
-        "type": "path"
-      },
-      "original": {
-        "path": "/etc/nixos",
-        "type": "path"
-      }
-    },
     "mybash": {
       "flake": false,
       "locked": {
@@ -47,7 +34,6 @@
     },
     "root": {
       "inputs": {
-        "local": "local",
         "mybash": "mybash",
         "nixpkgs": "nixpkgs"
       }
