@@ -28,7 +28,7 @@
       system = "x86_64-linux";
       specialArgs = {
         inherit cfg mybash;
-        revision = self.rev or "dirty";
+        revision = self.shortRev or "dirty";
       };
       modules = [
         /etc/nixos/hardware-configuration.nix

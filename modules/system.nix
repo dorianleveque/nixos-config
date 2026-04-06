@@ -39,7 +39,7 @@
     flags = [ "--impure" "--refresh" ];
   };
 
-  system.configurationRevision = revision;
+  system.configurationRevision = "${revision}-${cfg.channel}-${cfg.profile}";
 
   systemd.services.nixos-upgrade = {
     after = [ "network-online.target" ];
