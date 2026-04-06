@@ -10,10 +10,23 @@
   };
 
   outputs = { self, nixpkgs, mybash }: 
-  let
+  let  
+
+    default_config = {
+      profile = "default";
+      channel = "main";
+    };
+
+    # Mix the configuration /etc/nixos/config.json with the default.
+    cfg = default_config // (
+      if builtins.pathExists /etc/nixos/config.json
+      then builtins.fromJSON (builtins.readFile /etc/nixos/config.json)
+      else {}
+    );
+    
     mkSystem = extraModules: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit mybash; };
+      specialArgs = { inherit cfg mybash; };
       modules = [
         /etc/nixos/hardware-configuration.nix
         /etc/nixos/configuration.nix

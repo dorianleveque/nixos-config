@@ -1,4 +1,4 @@
-{ config, ... }:
+{ cfg, config, pkgs, ... }:
 
 {
   # Hide nix documentation shortcut. Useless for non admin users.
@@ -30,11 +30,18 @@
     enable = true;
     interval = "daily";
   };
-  
+
+  # Auto upgrade
   system.autoUpgrade = {
     enable = true;
-    flake = "github:dorianleveque/my-nixos-config#default";
+    flake = "github:dorianleveque/my-nixos-config/${cfg.channel}#${cfg.profile}";
     operation = "boot";
     flags = [ "--impure" ];
+  };
+
+  systemd.services.nixos-upgrade = {
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/sleep 30";
   };
 }
