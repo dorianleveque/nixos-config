@@ -1,4 +1,4 @@
-{ cfg, config, pkgs, ... }:
+{ cfg, config, pkgs, revision, ... }:
 
 {
   # Hide nix documentation shortcut. Useless for non admin users.
@@ -38,6 +38,8 @@
     operation = "boot";
     flags = [ "--impure" "--refresh" ];
   };
+
+  system.configurationRevision = revision;
 
   systemd.services.nixos-upgrade = {
     after = [ "network-online.target" ];

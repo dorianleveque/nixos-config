@@ -26,7 +26,10 @@
     
     mkSystem = extraModules: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit cfg mybash; };
+      specialArgs = {
+        inherit cfg mybash;
+        revision = self.rev or "dirty";
+      };
       modules = [
         /etc/nixos/hardware-configuration.nix
         /etc/nixos/configuration.nix
