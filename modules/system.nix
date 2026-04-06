@@ -36,7 +36,7 @@
     enable = true;
     flake = "github:dorianleveque/my-nixos-config/${cfg.channel}#${cfg.profile}";
     operation = "boot";
-    flags = [ "--impure" ];
+    flags = [ "--impure" "--refresh" ];
   };
 
   systemd.services.nixos-upgrade = {
