@@ -159,7 +159,6 @@
       gnomeExtensions.in-picture
       gnomeExtensions.mpris-label
       gnomeExtensions.removable-drive-menu
-      gnomeExtensions.rounded-corners
       mission-center # replace gnome-system-monitor
     ];
   };
