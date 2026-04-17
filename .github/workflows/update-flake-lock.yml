@@ -1,0 +1,29 @@
+name: Update flake.lock
+
+on:
+  schedule:
+    - cron: "0 3 * * *"  # launch the action every day at 3am
+  workflow_dispatch:     # allow manual launch from GitHub
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Update flake.lock
+        run: nix flake update
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git diff --quiet flake.lock || (
+            git add flake.lock &&
+            git commit -m "chore: update packages" &&
+            git push origin main
+          )
