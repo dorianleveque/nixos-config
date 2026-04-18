@@ -38,7 +38,7 @@ jobs:
           ref: update-flake-lock
       - uses: DeterminateSystems/nix-installer-action@main
       - name: Validate flake
-        run: nix flake check
+        run: nix flake check --impure
 
 
   # Auto-merge une fois le check passé
