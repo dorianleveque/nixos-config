@@ -1,4 +1,4 @@
-{ cfg, config, pkgs, revision, ... }:
+{ config, pkgs, revision, ... }:
 
 {
   # Hide nix documentation shortcut. Useless for non admin users.
@@ -34,9 +34,9 @@
   # Auto upgrade
   system.autoUpgrade = {
     enable = true;
-    flake = "github:dorianleveque/my-nixos-config/${cfg.channel}#${cfg.profile}";
+    flake = "/etc/nixos";
     operation = "boot";
-    flags = [ "--impure" "--refresh" ];
+    flags = [ "--refresh" ];
   };
 
   system.configurationRevision = "${revision}-${cfg.channel}-${cfg.profile}";
