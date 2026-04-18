@@ -1,4 +1,4 @@
-{ cfg, config, pkgs, revision, ... }:
+{ profile, pkgs, revision, ... }:
 
 {
   # Hide nix documentation shortcut. Useless for non admin users.
@@ -34,12 +34,12 @@
   # Auto upgrade
   system.autoUpgrade = {
     enable = true;
-    flake = "github:dorianleveque/my-nixos-config/${cfg.channel}#${cfg.profile}";
+    flake = "/etc/nixos";
     operation = "boot";
-    flags = [ "--impure" "--refresh" ];
+    flags = [ "--recreate-lock-file" ];
   };
 
-  system.configurationRevision = "${revision}-${cfg.channel}-${cfg.profile}";
+  system.configurationRevision = "${revision}-${profile}";
 
   systemd.services.nixos-upgrade = {
     after = [ "network-online.target" ];
