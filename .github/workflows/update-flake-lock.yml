@@ -8,6 +8,8 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+    outputs:
+      has-changes: ${{ steps.changes.outputs.changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,9 +20,19 @@ jobs:
       - name: Update flake.lock
         run: nix flake update
 
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet flake.lock; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
         id: pr
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: update-flake-lock
@@ -32,19 +44,25 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     needs: update
+    if: needs.update.outputs.has-changes == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           ref: update-flake-lock
-      - uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
       - name: Validate flake
-        run: nix flake check --impure
+        run: nix flake check ./ci
 
 
   # Auto-merge une fois le check passé
   automerge:
     runs-on: ubuntu-latest
-    needs: validate
+    needs: [ update, validate ]
+    if: needs.update.outputs.has-changes == 'true'
     steps:
       - name: Enable auto-merge
         run: gh pr merge update-flake-lock --auto --squash
