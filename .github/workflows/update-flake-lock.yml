@@ -18,12 +18,35 @@ jobs:
       - name: Update flake.lock
         run: nix flake update
 
-      - name: Commit and push if changed
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git diff --quiet flake.lock || (
-            git add flake.lock &&
-            git commit -m "chore: update packages" &&
-            git push origin main
-          )
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        id: pr
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: update-flake-lock
+          title: "chore: update flake.lock"
+          body: "Mise à jour automatique du flake.lock"
+          base: main
+
+  # Check that flake was correctly update for auto-merge
+  validate:
+    runs-on: ubuntu-latest
+    needs: update
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: update-flake-lock
+      - uses: DeterminateSystems/nix-installer-action@main
+      - name: Validate flake
+        run: nix flake check
+
+
+  # Auto-merge une fois le check passé
+  automerge:
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: Enable auto-merge
+        run: gh pr merge update-flake-lock --auto --squash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
