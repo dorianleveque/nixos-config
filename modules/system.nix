@@ -1,4 +1,4 @@
-{ config, pkgs, revision, ... }:
+{ profile, pkgs, revision, ... }:
 
 {
   # Hide nix documentation shortcut. Useless for non admin users.
@@ -36,10 +36,10 @@
     enable = true;
     flake = "/etc/nixos";
     operation = "boot";
-    flags = [ "--refresh" ];
+    flags = [ "--recreate-lock-file" ];
   };
 
-  system.configurationRevision = "${revision}-${cfg.channel}-${cfg.profile}";
+  system.configurationRevision = "${revision}-${profile}";
 
   systemd.services.nixos-upgrade = {
     after = [ "network-online.target" ];
