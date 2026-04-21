@@ -20,8 +20,8 @@
         modules = [
           hardware
           local
-          ./modules/default.nix
-          #./modules/${profile}.nix
+          ./config/common.nix
+          ./modules/${profile}.nix
         ];
       };
   };
