@@ -3,7 +3,7 @@
 {
   features = {
     firefox.enable = true;
-    flathub.enable = true;
+    flatpak.enable = true;
     git.enable = true;
     printing.enable = true;
     virtualAndroidWebcam.enable = true;
