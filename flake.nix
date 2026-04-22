@@ -10,7 +10,7 @@
   };
 
   outputs = { self, nixpkgs, mybash }: {
-    lib.mkSystem = { profile ? "default", hardware, local }:
+    lib.mkSystem = { profile ? "home", hardware, local }:
       nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
@@ -20,8 +20,8 @@
         modules = [
           hardware
           local
-          ./modules/default.nix
-          #./modules/${profile}.nix
+          ./config/common.nix
+          ./profiles/${profile}.nix
         ];
       };
   };
