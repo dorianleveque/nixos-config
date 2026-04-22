@@ -62,7 +62,3 @@ in
     users.groups.lp.members = normalUsers;
   };
 }
-
-
-
-
