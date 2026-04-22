@@ -17,5 +17,5 @@
       # Open ports in the firewall for Steam Local Network Game Transfers
       localNetworkGameTransfers.openFirewall = true; 
     };
-  }
+  };
 }
