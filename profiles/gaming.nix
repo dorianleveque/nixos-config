@@ -1,15 +1,9 @@
 { ... }:
 
 {
-  features = {
-    # home
-    firefox.enable = true;
-    flathub.enable = true;
-    git.enable = true;
-    printing.enable = true;
-    virtualAndroidWebcam.enable = true;
+  imports = [ ./home.nix ];
 
-    # specific
+  features = {
     gamepad.enable = true;
     steam.enable = true;
   };
