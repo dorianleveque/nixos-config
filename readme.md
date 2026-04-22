@@ -1,5 +1,8 @@
 ## Dépannage
 
+<details>
+<summary>
+
 ### Erreur EXT4 sur NixOS
 
 Si le menu de secours du stage 1 de NixOS s'affiche lors du démmarage du PC avec ce message 
@@ -20,10 +23,12 @@ of the following keys:
   r) to reboot immediately
   *) to ignore the error and continue
 ```
+</summary>
 
 Pas de panique ! Des erreurs se sont produites sur une partition du disque sur lequel NixOS à été installé.
 Cela peut arriver si vous avez arrêté brusquement le système (arrêt forcé ou coupure du courrant).
 Vous pouvez toujours démarrer le système en appuyant sur n'importe quelle autre touche affichée.
+
 
 Pour supprimer le menu de récupération au démarrage, vous devez réparer la partition du disque à l'origine de l'erreur:
 
@@ -67,3 +72,5 @@ exec /init
 ```
 
 6) Si le menu de dépannage réapparait, appuyez sur `r` pour redémarrer. Le menu de récupération ne s'affichera plus.
+
+</details>
