@@ -27,7 +27,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN  }}
           branch: update-flake-lock
-          title: "chore: update flake.lock ${{ steps.date.outputs.CURRENT_DATE }}"
+          title: "chore: update flake.lock (${{ steps.date.outputs.CURRENT_DATE }})"
           body: "Mise à jour automatique du flake.lock"
           base: main
           auto-merge: squash
+          commit-message: "chore: update flake.lock (${{ steps.date.outputs.CURRENT_DATE }})"
