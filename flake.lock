@@ -3,11 +3,11 @@
     "mybash": {
       "flake": false,
       "locked": {
-        "lastModified": 1774215055,
-        "narHash": "sha256-5xKoqh1+L0+KXChrm1cdHSQX68y3U2T7JD0UqOrkCsc=",
+        "lastModified": 1776871343,
+        "narHash": "sha256-7CB2I50ni2hq2QjAJTq/aM/o47tbigBXQSOL1JjwrO0=",
         "owner": "dorianleveque",
         "repo": "mybash",
-        "rev": "d27252b3664b561b4f55a7769cfc3aaf3bf33a73",
+        "rev": "8d12ce38d41d132e43cabbd62a34feb80dee0b24",
         "type": "github"
       },
       "original": {
@@ -18,11 +18,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1776560675,
-        "narHash": "sha256-p68udKWWh7+V4ZPpcMDq0gTHWNZJnr4JPI+kHPPE40o=",
+        "lastModified": 1776734388,
+        "narHash": "sha256-vl3dkhlE5gzsItuHoEMVe+DlonsK+0836LIRDnm6MXQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e07580dae39738e46609eaab8b154de2488133ce",
+        "rev": "10e7ad5bbcb421fe07e3a4ad53a634b0cd57ffac",
         "type": "github"
       },
       "original": {
