@@ -5,20 +5,17 @@
 
       mini = nixos-config.lib.mkSystem {
         profile = "mini";
-        hardware = ./hardware-configuration.nix;
-        local = ./configuration.nix;
+        local-configuration = ./configuration.nix;
       };
 
       default = nixos-config.lib.mkSystem {
         profile = "home";
-        hardware = ./hardware-configuration.nix;
-        local = ./configuration.nix;
+        local-configuration = ./configuration.nix;
       };
 
       gaming = nixos-config.lib.mkSystem {
         profile = "gaming";
-        hardware = ./hardware-configuration.nix;
-        local = ./configuration.nix;
+        local-configuration = ./configuration.nix;
       };
     };
   };
