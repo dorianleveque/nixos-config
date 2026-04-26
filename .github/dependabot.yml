@@ -1,0 +1,7 @@
+version: 2
+updates:
+  - package-ecosystem: "nix"
+    directory: "/"
+    schedule:
+      interval: "cron"
+      cronjob: "0 3 * * *" # launch the action every day at 3am
