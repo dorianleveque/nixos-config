@@ -1,9 +1,12 @@
-{ config, lib, ... }:
+{ config, lib, hostname, ... }:
 
 {
   networking = {
     # Enable networking
     networkmanager.enable = true;
+
+    # Define the hostname
+    hostName = hostname;
 
     # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
     # (the default) this is the recommended approach. When using systemd-networkd it's

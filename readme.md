@@ -1,3 +1,27 @@
+## Comment puis-je utiliser cette configuration sur mon système ?
+
+> Prérequis: Installer NixOS sur la machine.
+
+Créez le fichier `/etc/nixos/flake.nix` et ajoutez-y les lignes suivantes :
+```nix
+{
+  inputs.nixos-config.url = "github:dorianleveque/my-nixos-config/main";
+
+  outputs = { nixos-config, ... }: {
+    nixosConfigurations.HOSTNAME = nixos-config.lib.mkSystem {
+      profile = "gaming";
+      local-configuration = ./configuration.nix;
+    };
+  };
+}
+```
+Remplacez `HOSTNAME` par le nom que vous souhaitez attribuer à la machine
+sur le réseau. Si vous ne souhaitez pas spécifier de nom, ou si vous préférez
+que le serveur DHCP s'en charge, remplacez `HOSTNAME` par `default`.
+
+Exécutez la commande `sudo nixos-rebuild switch` pour reconstruire le système
+à l'aide de la nouvelle configuration définie dans le fichier `flake.nix`.
+
 ## Dépannage
 
 <details>

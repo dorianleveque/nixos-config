@@ -1,4 +1,4 @@
-{ profile, pkgs, revision, ... }:
+{ localArgs, pkgs, revision, ... }:
 
 {
   # Hide nix documentation shortcut. Useless for non admin users.
@@ -39,7 +39,7 @@
     flags = [ "--recreate-lock-file" ];
   };
 
-  system.configurationRevision = "${revision}-${profile}";
+  system.configurationRevision = "${revision}-${localArgs.profile}";
 
   systemd.services.nixos-upgrade = {
     after = [ "network-online.target" ];

@@ -1,21 +1,21 @@
 {
   inputs.nixos-config.url = "github:dorianleveque/my-nixos-config/main";
   outputs = { nixos-config, ... }: {
-    nixosConfigurations = {
+    nixosConfigurations = nixos-config.lib.mkSystems {
 
-      mini = nixos-config.lib.mkSystem {
+      mini = {
         profile = "mini";
-        local-configuration = ./configuration.nix;
+        configuration-file = ./configuration.nix;
       };
 
-      default = nixos-config.lib.mkSystem {
+      home = {
         profile = "home";
-        local-configuration = ./configuration.nix;
+        configuration-file = ./configuration.nix;
       };
 
-      gaming = nixos-config.lib.mkSystem {
+      gaming = {
         profile = "gaming";
-        local-configuration = ./configuration.nix;
+        configuration-file = ./configuration.nix;
       };
     };
   };

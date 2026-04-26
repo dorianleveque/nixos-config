@@ -10,18 +10,19 @@
   };
 
   outputs = { self, nixpkgs, mybash }: {
-    lib.mkSystem = { profile ? "home", local-configuration }:
+    lib.mkSystems = builtins.mapAttrs (hostname: localArgs:
       nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
-          inherit mybash profile;
+          inherit mybash hostname localArgs;
           revision = self.shortRev or "dirty";
         };
         modules = [
-          local-configuration
+          localArgs.configuration-file
           ./config/common.nix
-          ./profiles/${profile}.nix
+          ./profiles/${localArgs.profile or "home"}.nix
         ];
-      };
+      }
+    );
   };
 }
