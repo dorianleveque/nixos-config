@@ -175,6 +175,7 @@
   systemd.tmpfiles.rules = [
     "d /run/gdm 0755 gdm gdm -"
     "d /run/gdm/.cache 0700 gdm gdm -"
+    "d /run/gdm/.cache/ibus 0700 gdm gdm -"
     "d /run/gdm/.local 0700 gdm gdm -"
   ];
 }
