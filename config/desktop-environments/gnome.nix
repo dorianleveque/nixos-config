@@ -177,5 +177,9 @@
     "d /run/gdm/.cache 0700 gdm gdm -"
     "d /run/gdm/.cache/ibus 0700 gdm gdm -"
     "d /run/gdm/.local 0700 gdm gdm -"
+    "d /run/gdm/.local/share 0700 gdm gdm -"
+    "d /run/gdm/.local/share/gnome-shell 0700 gdm gdm -"
+    "d /run/gdm/.local/share/icc 0700 gdm gdm -"
+    "d /run/gdm/.local/state 0700 gdm gdm -"
   ];
 }
