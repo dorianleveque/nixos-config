@@ -6,7 +6,6 @@
     # standard system configuration
     ./bash.nix
     ./boot.nix
-    ./env-variables.nix
     ./networking.nix
     ./pipewire.nix
     ./system.nix
