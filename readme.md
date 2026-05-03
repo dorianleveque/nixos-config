@@ -8,9 +8,11 @@ Créez le fichier `/etc/nixos/flake.nix` et ajoutez-y les lignes suivantes :
   inputs.nixos-config.url = "github:dorianleveque/my-nixos-config/main";
 
   outputs = { nixos-config, ... }: {
-    nixosConfigurations.HOSTNAME = nixos-config.lib.mkSystem {
-      profile = "gaming";
-      local-configuration = ./configuration.nix;
+    nixosConfigurations = nixos-config.lib.mkSystems {
+      HOSTNAME = {
+        profile = "home";
+        configuration-file = ./configuration.nix;
+      };
     };
   };
 }
@@ -19,8 +21,50 @@ Remplacez `HOSTNAME` par le nom que vous souhaitez attribuer à la machine
 sur le réseau. Si vous ne souhaitez pas spécifier de nom, ou si vous préférez
 que le serveur DHCP s'en charge, remplacez `HOSTNAME` par `default`.
 
-Exécutez la commande `sudo nixos-rebuild switch` pour reconstruire le système
-à l'aide de la nouvelle configuration définie dans le fichier `flake.nix`.
+Les préréglages du flake peuvent être activés via la sélection du profil.
+Il ne s'agit que de préréglages. Si vous maîtrisez la configuration de NixOS,
+vous pouvez désactiver ou activer les différentes options individuellement.
+
+Exécutez la commande `sudo nixos-rebuild switch --recreate-lock-file --flake /etc/nixos#HOSTNAME`
+pour reconstruire le système à l'aide de la nouvelle configuration définie dans le fichier `flake.nix`.
+
+## Profils disponibles
+
+| Profils                        | mini | home | gaming |
+|:-------------------------------|:----:|:----:|:------:|
+| bash                           |  ✅️  |  ✅️  |   ✅️   |
+| boot                           |  ✅️  |  ✅️  |   ✅️   |
+| networking                     |  ✅️  |  ✅️  |   ✅️   |
+| pipewire                       |  ✅️  |  ✅️  |   ✅️   |
+| system / auto update           |  ✅️  |  ✅️  |   ✅️   |
+| desktop environment - gnome    |  ❌️  |  ✅️  |   ✅️   |
+| desktop environment - hyprland |  ❌️  |  ✅️  |   ✅️   |
+| android webcam                 |      |  ✅️  |   ✅️   |
+| firefox                        |      |  ✅️  |   ✅️   |
+| flathub                        |      |  ✅️  |   ✅️   |
+| git                            |      |  ✅️  |   ✅️   |
+| printing                       |      |  ✅️  |   ✅️   |
+| steam                          |      |      |   ✅️   |
+
+
+## Logiciels inclus par profils
+
+| Profils                        | mini | home | gaming |
+|:-------------------------------|:----:|:----:|:------:|
+| bottles                        |  ❌️  |  ❌️  |   ✅️   |
+| discord                        |  ❌️  |  ❌️  |   ✅️   |
+| fastfetch                      |  ✅️  |  ✅️  |   ✅️   |
+| fragments                      |  ❌️  |  ✅️  |   ✅️   |
+| gnome-secrets                  |  ❌️  |  ✅️  |   ✅️   |
+| onlyoffice                     |  ❌️  |  ✅️  |   ✅️   |
+| parabolic                      |  ❌️  |  ✅️  |   ✅️   |
+| pinta                          |  ❌️  |  ✅️  |   ✅️   |
+| shortwave                      |  ❌️  |  ✅️  |   ✅️   |
+| signal                         |  ❌️  |  ✅️  |   ✅️   |
+| tagger                         |  ❌️  |  ✅️  |   ✅️   |
+| thunderbird                    |  ❌️  |  ✅️  |   ✅️   |
+| upscaler                       |  ❌️  |  ✅️  |   ✅️   |
+
 
 ## Dépannage
 
