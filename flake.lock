@@ -3,11 +3,11 @@
     "mybash": {
       "flake": false,
       "locked": {
-        "lastModified": 1777118694,
-        "narHash": "sha256-EVtkrEtwdKW2kFJ6+ia6tLRDzWzxLevhL1svsO4fe+0=",
+        "lastModified": 1777807558,
+        "narHash": "sha256-hIAUxWSGS+sVxdmSUsfn9m+auiyx5/be77uk0RloAcw=",
         "owner": "dorianleveque",
         "repo": "mybash",
-        "rev": "d90deca0b1f9311365d9dd538c5ce17d55414d14",
+        "rev": "12240a61de5bb0adf64ff95c0656c92acd190039",
         "type": "github"
       },
       "original": {
