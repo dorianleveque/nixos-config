@@ -18,7 +18,7 @@
   nix.gc = {
     automatic = true;
     dates = "daily";
-    options = "--delete-older-than 7d";
+    options = "--delete-older-than 30d";
       
     # Relaunch the garbage collector at system startup 
     # if system was shutdown before its execution. 
