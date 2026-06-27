@@ -8,11 +8,17 @@
       enable = true;
       languagePacks = [ "fr" ];
       policies = {
+        # Disable auto update (update are controlled by nix)
         DisableAppUpdate = true;
+        
+        # Disable adding a shortcut to the Nixos manual in the Firefox bookmarks.
+        NoDefaultBookmarks = true;
+
+        # Remove useless pocket
         DisablePocket = true;
+
+        # Remove ads & tracking
         DisableTelemetry = true;
-        DisplayBookmarksToolbar = "newtab";
-        DisplayMenuBar = "default-off";
         EnableTrackingProtection = {
           Locked = true;
           Category = "strict";
@@ -50,15 +56,26 @@
           Stories = false;
           TopSites = true;
         };
-        HttpsOnlyMode = "enabled";
-        
-        # Disable adding a shortcut to the Nixos manual in the Firefox bookmarks.
-        NoDefaultBookmarks = true;
+
+        # Do not allow users to compromise their own security
+        DisableSecurityBypass = {
+          InvalidCertificate = false;
+          SafeBrowsing = false;
+        };
+        HttpsOnlyMode = "force_enabled";
         
         # Disable password saving
+        DisablePasswordReveal = false;
         OfferToSaveLogins = false;
         OfferToSaveLoginsDefault = false;
         PasswordManagerEnabled = false;
+
+        # Disable auto fill
+        AutofillAddressEnabled = false;
+        AutofillCreditCardEnabled = false;
+
+        # Allow printing
+        PrintingEnabled = true;
         
         # Force pip in Firefox with picture gnome extension
         PictureInPicture = {
@@ -71,13 +88,22 @@
             Value = 0;
             Status = "locked"; # put "default" if gnome settings enabled (flake)
           };
+
+          # Put the video in picture in picture (pip) mode when user switch to another tab.
+          "media.videocontrols.picture-in-picture.enable-when-switching-tabs.enabled" = {
+            "Value" = true;
+            "Status" = "default";
+          };
+
           "privacy.globalprivacycontrol.enabled" = {
             Value = true;
             Status = "locked";
           };
         };
-        
-        PrintingEnabled = true;
+
+        # Look & feel
+        DisplayBookmarksToolbar = "newtab";
+        DisplayMenuBar = "default-off";
         RequestedLocales = "fr";
         SearchBar = "unified";
         SearchEngines = {
