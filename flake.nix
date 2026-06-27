@@ -2,7 +2,7 @@
   description = "Configuration NixOS commune";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11"; # stable channel
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05"; # stable channel
     mybash = {
       url = "github:dorianleveque/mybash";
       flake = false;
