@@ -36,14 +36,27 @@
     enable = true;
     flake = "/etc/nixos";
     operation = "boot";
-    flags = [ "--recreate-lock-file" ];
   };
 
   system.configurationRevision = "${revision}-${localArgs.profile}";
 
-  systemd.services.nixos-upgrade = {
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-    serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/sleep 30";
+  systemd.services = {
+    nix-flake-update = {
+      description = "Update NixOS flake inputs";
+      before = [ "nixos-upgrade.service" ];
+      wantedBy = [ "nixos-upgrade.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+        WorkingDirectory = "/etc/nixos";
+        ExecStart = "${pkgs.nix}/bin/nix flake update";
+      };
+    };
+
+    nixos-upgrade = {
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+      serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/sleep 30";
+    };
   };
 }
