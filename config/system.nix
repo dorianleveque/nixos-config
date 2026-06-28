@@ -58,5 +58,5 @@
       wants = [ "network-online.target" ];
       serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/sleep 30";
     };
-  }
+  };
 }
