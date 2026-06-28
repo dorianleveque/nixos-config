@@ -8,8 +8,16 @@
     
     # Install required packages
     environment.systemPackages = with pkgs; [
-      scrcpy
       ffmpeg
+
+      # Install and hide scrcpy & srccpy-console shortcut in the desktop ui
+      (scrcpy.overrideAttrs (old: {
+        postInstall = (old.postInstall or "") + ''
+          for f in $out/share/applications/scrcpy*.desktop; do
+            echo "Hidden=true" >> $f
+          done
+        '';
+      }))
     ];
     
     boot = {
