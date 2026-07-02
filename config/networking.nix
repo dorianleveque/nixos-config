@@ -1,15 +1,12 @@
-{ config, lib, hostname, ... }:
+{ config, lib, ... }:
 
 let
-  isDhcpManaged = hostname == "default";
+  isDhcpManaged = config.networking.hostName == "";
 in
 {
   networking = {
     # Enable networking
     networkmanager.enable = true;
-
-    # Define the hostname
-    hostName = lib.mkIf (!isDhcpManaged) hostname;
 
     # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
     # (the default) this is the recommended approach. When using systemd-networkd it's
