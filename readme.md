@@ -9,7 +9,7 @@ Créez le fichier `/etc/nixos/flake.nix` et ajoutez-y les lignes suivantes :
 
   outputs = { nixos-config, ... }: {
     nixosConfigurations = nixos-config.lib.mkSystems {
-      HOSTNAME = {
+      MACHINE_ID = {
         profile = "home";
         configuration-file = ./configuration.nix;
       };
@@ -17,15 +17,22 @@ Créez le fichier `/etc/nixos/flake.nix` et ajoutez-y les lignes suivantes :
   };
 }
 ```
-Remplacez `HOSTNAME` par le nom que vous souhaitez attribuer à la machine
-sur le réseau. Si vous ne souhaitez pas spécifier de nom, ou si vous préférez
-que le serveur DHCP s'en charge, remplacez `HOSTNAME` par `default`.
+Remplacez `MACHINE_ID` par l'identifiant de la machine généré après installation:
+```bash
+cat /etc/machine_id
+```
+
+Si vous souhaitez personnaliser le nom de la machine sur le réseau, définissez
+la variable `networking.hostName = "<NOM_MACHINE>"` dans le fichier
+`/etc/nixos/configuration.nix`.
+Si vous ne souhaitez pas spécifier de nom, ou si vous préférez que le serveur
+DHCP s'en charge, définissez la variable `networking.hostName = ""` vide.
 
 Les préréglages du flake peuvent être activés via la sélection du profil.
 Il ne s'agit que de préréglages. Si vous maîtrisez la configuration de NixOS,
 vous pouvez désactiver ou activer les différentes options individuellement.
 
-Exécutez la commande `sudo nixos-rebuild switch --recreate-lock-file --flake /etc/nixos#HOSTNAME`
+Exécutez la commande `sudo nixos-rebuild switch --recreate-lock-file --flake /etc/nixos#MACHINE_ID`
 pour reconstruire le système à l'aide de la nouvelle configuration définie dans le fichier `flake.nix`.
 
 ## Profils disponibles
