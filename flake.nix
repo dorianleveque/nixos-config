@@ -10,11 +10,11 @@
   };
 
   outputs = { self, nixpkgs, mybash }: {
-    lib.mkSystems = builtins.mapAttrs (hostname: localArgs:
+    lib.mkSystems = builtins.mapAttrs (machine_id: localArgs:
       nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
-          inherit mybash hostname localArgs;
+          inherit mybash localArgs;
           revision = self.shortRev or "dirty";
         };
         modules = [
