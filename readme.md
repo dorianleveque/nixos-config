@@ -32,8 +32,11 @@ Les préréglages du flake peuvent être activés via la sélection du profil.
 Il ne s'agit que de préréglages. Si vous maîtrisez la configuration de NixOS,
 vous pouvez désactiver ou activer les différentes options individuellement.
 
-Exécutez la commande `sudo nixos-rebuild switch --recreate-lock-file --flake /etc/nixos#MACHINE_ID`
-pour reconstruire le système à l'aide de la nouvelle configuration définie dans le fichier `flake.nix`.
+Exécutez la commande suivante pour reconstruire le système avec la nouvelle
+configuration définie dans le fichier `flake.nix`.
+```bash
+sudo nixos-rebuild switch --flake "/etc/nixos#$(systemd-machine-id-setup --print)"
+```
 
 ## Profils disponibles
 
