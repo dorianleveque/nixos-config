@@ -46,7 +46,7 @@
         };
         FirefoxHome = {
           Highlights = false;
-          Locked = false;
+          Locked = true;
           Pocket = false;
           Search = true;
           Snippets = false;
@@ -55,6 +55,13 @@
           SponsoredStories = false;
           Stories = false;
           TopSites = true;
+        };
+
+        FirefoxSuggest = {
+          ImproveSuggest = false;
+          Locked = true;
+          SponsoredSuggestions = false;
+          WebSuggestions = false;
         };
 
         # Do not allow users to compromise their own security
