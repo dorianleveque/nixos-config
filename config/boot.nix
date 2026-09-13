@@ -9,14 +9,21 @@
     
     # Force to use the last Linux kernel
     kernelPackages = pkgs.linuxPackages_latest;
-    
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
-    
-    # Hide the OS choice for bootloaders.
-    # It's still possible to open the bootloader list by pressing any key
-    # It will just not appear on screen unless a key is pressed
-    loader.timeout = 0;
+
+    loader = {
+      systemd-boot.enable = true;
+
+      # Limit the number of generations to prevent the EFI partition from becoming full,
+      # which could prevent automatic updates from being applied.
+      systemd-boot.configurationLimit = 5;
+
+      efi.canTouchEfiVariables = true;
+
+      # Hide the OS choice for bootloaders.
+      # It's still possible to open the bootloader list by pressing any key
+      # It will just not appear on screen unless a key is pressed
+      timeout = 0;
+    };
     
     # Play a loading screen at startup
     plymouth.enable = true;
