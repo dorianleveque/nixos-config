@@ -1,4 +1,4 @@
-{ localArgs, pkgs, revision, ... }:
+{ machine_id, localArgs, pkgs, revision, ... }:
 
 {
   # Hide nix documentation shortcut. Useless for non admin users.
@@ -34,7 +34,7 @@
   # Auto upgrade
   system.autoUpgrade = {
     enable = true;
-    flake = "/etc/nixos";
+    flake = "/etc/nixos#${machine_id}";
     operation = "boot";
   };
 

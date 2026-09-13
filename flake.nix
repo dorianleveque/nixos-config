@@ -14,7 +14,7 @@
       nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
-          inherit mybash localArgs;
+          inherit machine_id mybash localArgs;
           revision = self.shortRev or "dirty";
         };
         modules = [
