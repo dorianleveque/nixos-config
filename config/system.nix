@@ -1,8 +1,5 @@
-{ lib, localArgs, pkgs, revision, ... }:
+{ machine_id, localArgs, pkgs, revision, ... }:
 
-let
-  machineId = lib.trim (builtins.readFile /etc/machine-id);
-in
 {
   # Hide nix documentation shortcut. Useless for non admin users.
   documentation.nixos.enable = false;
@@ -37,7 +34,7 @@ in
   # Auto upgrade
   system.autoUpgrade = {
     enable = true;
-    flake = "/etc/nixos#${machineId}";
+    flake = "/etc/nixos#${machine_id}";
     operation = "boot";
   };
 
