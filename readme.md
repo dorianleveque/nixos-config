@@ -5,7 +5,7 @@
 Créez le fichier `/etc/nixos/flake.nix` et ajoutez-y les lignes suivantes :
 ```nix
 {
-  inputs.nixos-config.url = "github:dorianleveque/my-nixos-config/main";
+  inputs.nixos-config.url = "github:dorianleveque/nixos-config/main";
 
   outputs = { nixos-config, ... }: {
     nixosConfigurations = nixos-config.lib.mkSystems {
