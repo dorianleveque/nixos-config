@@ -56,7 +56,19 @@
     nixos-upgrade = {
       after = [ "network-online.target" ];
       wants = [ "network-online.target" ];
-      serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/sleep 30";
+
+      # Check that nixos servers are available before launching nixos-rebuild
+      preStart = ''
+        if ! ${pkgs.curl}/bin/curl -fsS --max-time 10 https://nixos.org >/dev/null 2>&1; then
+          echo "No Internet connection available to the NixOS servers, aborting (will retry in 30 minutes)."
+          exit 1
+        fi
+      '';
+
+      serviceConfig = {
+        Restart = "on-failure";
+        RestartSec = "30min";
+      };
     };
   };
 }
