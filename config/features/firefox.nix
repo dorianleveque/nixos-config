@@ -102,6 +102,16 @@
             "Status" = "default";
           };
 
+          # Setting the default Zoom Level for the PDF Viewer
+          "pdfjs.defaultZoomValue" = {
+            # “Page fit” ensures that there is no misalignment when scrolling
+            # through pages using the “Page Up” and “Page Down” keys.
+            Value = "page-fit";
+
+            # The user should be able to adjust the setting if it does not suit them.
+            Status = "default";
+          };
+
           "privacy.globalprivacycontrol.enabled" = {
             Value = true;
             Status = "locked";
