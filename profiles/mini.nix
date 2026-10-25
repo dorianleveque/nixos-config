@@ -7,6 +7,9 @@
     fastfetch
   ];
 
-  # caches the devShell, avoids re-evaluating it every time
-  programs.direnv.enable = true;
+  # direnv + nix-direnv : loads the devShell automatically and caches it
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 }
