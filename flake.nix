@@ -9,20 +9,33 @@
     };
   };
 
-  outputs = { self, nixpkgs, mybash }: {
-    lib.mkSystems = builtins.mapAttrs (machine_id: localArgs:
-      nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit machine_id mybash localArgs;
-          revision = self.shortRev or "dirty";
-        };
-        modules = [
-          localArgs.configuration-file
-          ./config/common.nix
-          ./profiles/${localArgs.profile or "home"}.nix
-        ];
-      }
-    );
-  };
+  outputs =
+    {
+      self,
+      nixpkgs,
+      mybash,
+    }:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+    in
+    {
+      formatter.${system} = pkgs.nixfmt;
+
+      lib.mkSystems = builtins.mapAttrs (
+        machine_id: localArgs:
+        nixpkgs.lib.nixosSystem {
+          system = system;
+          specialArgs = {
+            inherit machine_id mybash localArgs;
+            revision = self.shortRev or "dirty";
+          };
+          modules = [
+            localArgs.configuration-file
+            ./config/common.nix
+            ./profiles/${localArgs.profile or "home"}.nix
+          ];
+        }
+      );
+    };
 }

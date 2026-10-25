@@ -1,5 +1,10 @@
-{ machine_id, localArgs, pkgs, revision, ... }:
-
+{
+  machine_id,
+  localArgs,
+  pkgs,
+  revision,
+  ...
+}:
 {
   # Hide nix documentation shortcut. Useless for non admin users.
   documentation.nixos.enable = false;
@@ -7,9 +12,12 @@
   # Configure the NixOS package manager
   nix.settings = {
     auto-optimise-store = true;
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
   };
-  
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -19,16 +27,22 @@
     automatic = true;
     dates = "daily";
     options = "--delete-older-than 30d";
-      
-    # Relaunch the garbage collector at system startup 
-    # if system was shutdown before its execution. 
+
+    # Relaunch the garbage collector at system startup
+    # if system was shutdown before its execution.
     persistent = true;
-  };	
+  };
 
   # Improve SSD management
   services.fstrim = {
     enable = true;
     interval = "daily";
+  };
+
+  # Add some aliases to simplify the nix commands
+  environment.shellAliases = {
+    nixos-list-system-dependencies = "nix run nixpkgs#nix-tree -- /run/current-system";
+    nixos-update = "sudo nixos-rebuild switch --flake /etc/nixos#$(cat /etc/machine-id)";
   };
 
   # Auto upgrade
