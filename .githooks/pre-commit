@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Fichiers .nix ajoutés/modifiés dans le commit
+files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.nix$' || true)
+[ -z "$files" ] && exit 0
+
+# Formater, puis remettre les fichiers formatés dans le commit
+echo "$files" | xargs nix fmt --
+echo "$files" | xargs git add

@@ -1,5 +1,10 @@
-{ machine_id, localArgs, pkgs, revision, ... }:
-
+{
+  machine_id,
+  localArgs,
+  pkgs,
+  revision,
+  ...
+}:
 {
   # Hide nix documentation shortcut. Useless for non admin users.
   documentation.nixos.enable = false;
@@ -7,9 +12,12 @@
   # Configure the NixOS package manager
   nix.settings = {
     auto-optimise-store = true;
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
   };
-  
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -19,9 +27,9 @@
     automatic = true;
     dates = "daily";
     options = "--delete-older-than 30d";
-      
-    # Relaunch the garbage collector at system startup 
-    # if system was shutdown before its execution. 
+
+    # Relaunch the garbage collector at system startup
+    # if system was shutdown before its execution.
     persistent = true;
   };
 
@@ -33,7 +41,7 @@
 
   # Add some aliases to simplify the nix commands
   environment.shellAliases = {
-    nixos-list-system-dependencies="nix run nixpkgs#nix-tree -- /run/current-system";
+    nixos-list-system-dependencies = "nix run nixpkgs#nix-tree -- /run/current-system";
     nixos-update = "sudo nixos-rebuild switch --flake /etc/nixos#$(cat /etc/machine-id)";
   };
 
@@ -52,10 +60,10 @@
       before = [ "nixos-upgrade.service" ];
       wantedBy = [ "nixos-upgrade.service" ];
       serviceConfig = {
-	Type = "oneshot";
-	User = "root";
-	WorkingDirectory = "/etc/nixos";
-	ExecStart = "${pkgs.nix}/bin/nix flake update";
+        Type = "oneshot";
+        User = "root";
+        WorkingDirectory = "/etc/nixos";
+        ExecStart = "${pkgs.nix}/bin/nix flake update";
       };
     };
 
@@ -65,15 +73,15 @@
 
       # Check that nixos servers are available before launching nixos-rebuild
       preStart = ''
-	if ! ${pkgs.curl}/bin/curl -fsS --max-time 10 https://nixos.org >/dev/null 2>&1; then
-	  echo "No Internet connection available to the NixOS servers, aborting (will retry in 30 minutes)."
-	  exit 1
-	fi
+        if ! ${pkgs.curl}/bin/curl -fsS --max-time 10 https://nixos.org >/dev/null 2>&1; then
+          echo "No Internet connection available to the NixOS servers, aborting (will retry in 30 minutes)."
+          exit 1
+        fi
       '';
 
       serviceConfig = {
-	Restart = "on-failure";
-	RestartSec = "30min";
+        Restart = "on-failure";
+        RestartSec = "30min";
       };
     };
   };
