@@ -3,6 +3,9 @@ name: Check the compatibility of GNOME extensions with GNOME Shell
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   validate-gnome-extensions:
     runs-on: ubuntu-latest
