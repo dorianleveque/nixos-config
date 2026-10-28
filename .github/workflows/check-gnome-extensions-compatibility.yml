@@ -1,7 +1,9 @@
-name: Check the compatibility of GNOME extensions with GNOME Shell
+name: Validate GNOME Extensions compatibility
 
 on:
   pull_request:
+  push:
+    branches: [main, stable]
 
 permissions:
   contents: read
@@ -22,21 +24,22 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
 
-      - name: Resolve GNOME Shell version and extensions from the NixOS config
+      - name: Resolve GNOME Shell version and extensions
         shell: bash
         run: |
-          nix eval --impure --json --expr '
-            let
-              cfg = (builtins.getFlake (toString ./.)).nixosConfigurations.${builtins.getEnv "HOST"};
-              exts = builtins.filter (p: p ? extensionUuid) cfg.config.environment.systemPackages;
-            in {
-              shellVersion = cfg.pkgs.gnome-shell.version;
-              extensions = map (p: {
-                name = p.name;
-                uuid = p.extensionUuid;
-                drv = p.drvPath;
-              }) exts;
-            }' > "$RUNNER_TEMP/gnome.json"
+          nix eval --json "./ci#nixosConfigurations.$HOST" \
+            --override-input nixos-config "path:$(pwd)" \
+            --apply 'cfg:
+              let
+                exts = builtins.filter (p: p ? extensionUuid) cfg.config.environment.systemPackages;
+              in {
+                shellVersion = cfg.pkgs.gnome-shell.version;
+                extensions = map (p: {
+                  name = p.name;
+                  uuid = p.extensionUuid;
+                  drv = p.drvPath;
+                }) exts;
+              }' > "$RUNNER_TEMP/gnome.json"
           jq . "$RUNNER_TEMP/gnome.json"
 
       - name: Verify extension compatibility
