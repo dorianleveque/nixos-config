@@ -1,0 +1,82 @@
+name: Validate GNOME Extensions compatibility
+
+on:
+  pull_request:
+  push:
+    branches: [main, stable]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-gnome-extensions:
+    runs-on: ubuntu-latest
+    env:
+      HOST: home
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Resolve GNOME Shell version and extensions
+        shell: bash
+        run: |
+          nix eval --json "./ci#nixosConfigurations.$HOST" \
+            --override-input nixos-config "path:$(pwd)" \
+            --apply 'cfg:
+              let
+                exts = builtins.filter (p: p ? extensionUuid) cfg.config.environment.systemPackages;
+              in {
+                shellVersion = cfg.pkgs.gnome-shell.version;
+                extensions = map (p: {
+                  name = p.name;
+                  uuid = p.extensionUuid;
+                  drv = p.drvPath;
+                }) exts;
+              }' > "$RUNNER_TEMP/gnome.json"
+          jq . "$RUNNER_TEMP/gnome.json"
+
+      - name: Verify extension compatibility
+        shell: bash
+        run: |
+          json="$RUNNER_TEMP/gnome.json"
+          major=$(jq -r '.shellVersion | split(".")[0]' "$json")
+          count=$(jq '.extensions | length' "$json")
+          echo "GNOME Shell major version: $major ($count extensions)"
+
+          if [ "$count" -eq 0 ]; then
+            echo "::error::No GNOME extensions found in nixosConfigurations.$HOST"
+            exit 1
+          fi
+
+          fail=0
+          while IFS=$'\t' read -r name uuid drv; do
+            echo "Checking $name"
+            out=$(nix build --no-link --print-out-paths "${drv}^out" </dev/null | head -n1) || {
+              echo "::error::Failed to build $name"
+              fail=1
+              continue
+            }
+            meta="$out/share/gnome-shell/extensions/$uuid/metadata.json"
+            if [ ! -f "$meta" ]; then
+              echo "::error::metadata.json not found for $name ($uuid)"
+              fail=1
+              continue
+            fi
+            if jq -e --arg v "$major" \
+                 '.["shell-version"] | any(. == $v or startswith($v + "."))' \
+                 "$meta" > /dev/null; then
+              echo "  OK: $name supports GNOME $major"
+            else
+              echo "::error::$name does NOT support GNOME $major (supported: $(jq -c '.["shell-version"]' "$meta"))"
+              fail=1
+            fi
+          done < <(jq -r '.extensions[] | [.name, .uuid, .drv] | @tsv' "$json")
+
+          exit $fail
