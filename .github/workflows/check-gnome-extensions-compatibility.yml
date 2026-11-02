@@ -3,7 +3,7 @@ name: Validate GNOME Extensions compatibility
 on:
   pull_request:
   push:
-    branches: [main, stable]
+    branches: [main, dev]
 
 permissions:
   contents: read
